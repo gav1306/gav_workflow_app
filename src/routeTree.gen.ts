@@ -9,10 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PipelineRouteImport } from './routes/pipeline'
+import { Route as PipelineRouteRouteImport } from './routes/pipeline/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PipelineIndexRouteImport } from './routes/pipeline/index'
 
-const PipelineRoute = PipelineRouteImport.update({
+const PipelineRouteRoute = PipelineRouteRouteImport.update({
   id: '/pipeline',
   path: '/pipeline',
   getParentRoute: () => rootRouteImport,
@@ -22,31 +23,38 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PipelineIndexRoute = PipelineIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PipelineRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/pipeline': typeof PipelineRoute
+  '/pipeline': typeof PipelineRouteRouteWithChildren
+  '/pipeline/': typeof PipelineIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/pipeline': typeof PipelineRoute
+  '/pipeline': typeof PipelineIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/pipeline': typeof PipelineRoute
+  '/pipeline': typeof PipelineRouteRouteWithChildren
+  '/pipeline/': typeof PipelineIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pipeline'
+  fullPaths: '/' | '/pipeline' | '/pipeline/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/pipeline'
-  id: '__root__' | '/' | '/pipeline'
+  id: '__root__' | '/' | '/pipeline' | '/pipeline/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PipelineRoute: typeof PipelineRoute
+  PipelineRouteRoute: typeof PipelineRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -55,7 +63,7 @@ declare module '@tanstack/react-router' {
       id: '/pipeline'
       path: '/pipeline'
       fullPath: '/pipeline'
-      preLoaderRoute: typeof PipelineRouteImport
+      preLoaderRoute: typeof PipelineRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +73,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pipeline/': {
+      id: '/pipeline/'
+      path: '/'
+      fullPath: '/pipeline/'
+      preLoaderRoute: typeof PipelineIndexRouteImport
+      parentRoute: typeof PipelineRouteRoute
+    }
   }
 }
 
+interface PipelineRouteRouteChildren {
+  PipelineIndexRoute: typeof PipelineIndexRoute
+}
+
+const PipelineRouteRouteChildren: PipelineRouteRouteChildren = {
+  PipelineIndexRoute: PipelineIndexRoute,
+}
+
+const PipelineRouteRouteWithChildren = PipelineRouteRoute._addFileChildren(
+  PipelineRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PipelineRoute: PipelineRoute,
+  PipelineRouteRoute: PipelineRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

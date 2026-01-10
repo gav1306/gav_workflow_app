@@ -1,10 +1,11 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const RootComponent = () => {
   return (
-    <main>
+    <SidebarProvider defaultOpen={false}>
       <Outlet />
-    </main>
+    </SidebarProvider>
   );
 };
 
