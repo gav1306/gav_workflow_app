@@ -9,6 +9,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SIDEBAR_NODES } from "../../utils/const";
+import { DraggableNode } from "../ui/draggable-node";
+import { GripVertical } from "lucide-react";
 
 export const PipelineSidebar = () => {
   return (
@@ -19,21 +21,27 @@ export const PipelineSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {SIDEBAR_NODES.map((item) => (
-                <SidebarMenuItem key={item.type}>
-                  <SidebarMenuButton size="lg" className="h-16 flex gap-2">
-                    <div className="flex items-center justify-center border rounded-sm p-2.5 bg-[#fef5fa]">
-                      <item.icon className="text-primary" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="capitalize font-medium">
-                        {item.title}
-                      </span>
-                      <span className="text-wrap line-clamp-2 text-xs text-muted-foreground font-light">
-                        {item.text}
-                      </span>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <DraggableNode key={item.type} type={item.type}>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      size="lg"
+                      className="h-16 flex gap-2 group/item"
+                    >
+                      <div className="flex items-center justify-center border rounded-sm p-2.5 bg-[#fef5fa]">
+                        <item.icon className="text-primary group-hover/item:hidden" />
+                        <GripVertical className="text-primary hidden group-hover/item:block" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="capitalize font-medium">
+                          {item.title}
+                        </span>
+                        <span className="text-wrap line-clamp-2 text-xs text-muted-foreground font-light">
+                          {item.text}
+                        </span>
+                      </div>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </DraggableNode>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
