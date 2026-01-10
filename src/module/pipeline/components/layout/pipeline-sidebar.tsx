@@ -1,5 +1,3 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -10,51 +8,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-// Menu items.
-const items = [
-  {
-    title: "Input",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Output",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+import { SIDEBAR_NODES } from "../../utils/const";
 
 export const PipelineSidebar = () => {
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarGroup className="p-4">
+          <SidebarGroupLabel className="">Core Nodes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
+              {SIDEBAR_NODES.map((item) => (
+                <SidebarMenuItem key={item.type}>
+                  <SidebarMenuButton size="lg" className="h-16 flex gap-2">
+                    <div className="flex items-center justify-center border rounded-sm p-2.5 bg-[#fef5fa]">
+                      <item.icon className="text-primary" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="capitalize font-medium">
+                        {item.title}
+                      </span>
+                      <span className="text-wrap line-clamp-2 text-xs text-muted-foreground font-light">
+                        {item.text}
+                      </span>
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
