@@ -7,6 +7,7 @@ import {
   CaseSensitive,
   Mail,
   Speech,
+  Search,
 } from "lucide-react";
 import { InputNode } from "../components/nodes/input";
 import { OutputNode } from "../components/nodes/output";
@@ -16,6 +17,7 @@ import { AnalyzeImageNode } from "../components/nodes/analyze-image";
 import { TextFormatterNode } from "../components/nodes/text-formatter";
 import { EmailNotificationNode } from "../components/nodes/email-notification";
 import { TextToSpeechNode } from "../components/nodes/text-to-speech";
+import { WebSearchNode } from "../components/nodes/web-search";
 import type { NodeTypes } from "../types";
 import { CustomEdge } from "../components/ui/custom-edge";
 
@@ -39,6 +41,7 @@ export const NODE_TYPES = {
   TEXT_FORMATTER: "text_formatter_node",
   EMAIL_NOTIFICATION: "email_notification_node",
   TEXT_TO_SPEECH: "text_to_speech_node",
+  WEB_SEARCH: "web_search_node",
 } as const;
 
 export const AI_MODELS = {
@@ -196,6 +199,19 @@ export const NODES = [
       output: "",
     },
     Component: TextToSpeechNode,
+  },
+  {
+    Icon: Search,
+    title: "web search",
+    type: NODE_TYPES.WEB_SEARCH,
+    description:
+      "Search the web using keywords and retrieve a list of relevant search results.",
+    output: [{ name: "results", type: OUTPUT_TYPE.CHUNKS }],
+    initialVariables: {
+      query: "",
+      results: "",
+    },
+    Component: WebSearchNode,
   },
 ];
 
