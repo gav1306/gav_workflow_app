@@ -5,6 +5,7 @@ import {
   FileText,
   ScanSearch,
   CaseSensitive,
+  Mail,
 } from "lucide-react";
 import { InputNode } from "../components/nodes/input";
 import { OutputNode } from "../components/nodes/output";
@@ -12,6 +13,7 @@ import { AskAiNode } from "../components/nodes/ask-ai";
 import { TextNode } from "../components/nodes/text";
 import { AnalyzeImageNode } from "../components/nodes/analyze-image";
 import { TextFormatterNode } from "../components/nodes/text-formatter";
+import { EmailNotificationNode } from "../components/nodes/email-notification";
 import type { NodeTypes } from "../types";
 import { CustomEdge } from "../components/ui/custom-edge";
 
@@ -33,6 +35,7 @@ export const NODE_TYPES = {
   TEXT: "text_node",
   ANALYZE_IMAGE: "analyze_image_node",
   TEXT_FORMATTER: "text_formatter_node",
+  EMAIL_NOTIFICATION: "email_notification_node",
 } as const;
 
 export const AI_MODELS = {
@@ -146,6 +149,21 @@ export const NODES = [
       output: "",
     },
     Component: TextFormatterNode,
+  },
+  {
+    Icon: Mail,
+    title: "email notification",
+    type: NODE_TYPES.EMAIL_NOTIFICATION,
+    description:
+      "Send email notifications to specified recipients with customizable subject and body content.",
+    output: [{ name: "status", type: OUTPUT_TYPE.STRING }],
+    initialVariables: {
+      recipient: "",
+      subject: "",
+      body: "",
+      status: "",
+    },
+    Component: EmailNotificationNode,
   },
 ];
 
