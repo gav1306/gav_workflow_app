@@ -9,13 +9,7 @@ import {
   type OnConnect,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-
-const NODE_TYPES = {
-  input_node: () => <div className="p-2 bg-white border">Input Node</div>,
-  output_node: () => <div className="p-2 bg-white border">Output Node</div>,
-  ask_ai_node: () => <div className="p-2 bg-white border">Ask AI Node</div>,
-  text_node: () => <div className="p-2 bg-white border">Text Node</div>,
-};
+import { NODE_COMPONENTS } from "../utils/const";
 
 export const PipelinePage = () => {
   const [nodes, , onNodesChange] = useNodesState([]);
@@ -27,14 +21,14 @@ export const PipelinePage = () => {
   console.log(nodes);
 
   return (
-    <section className="w-dvw h-dvh">
+    <section className="w-dvw h-dvh flex items-center justify-center">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        nodeTypes={NODE_TYPES}
+        nodeTypes={NODE_COMPONENTS}
         fitView
       >
         <Background />

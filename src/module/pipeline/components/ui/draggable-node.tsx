@@ -1,12 +1,29 @@
 import { useReactFlow, type XYPosition } from "@xyflow/react";
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from "react";
 import { useDraggable } from "@neodrag/react";
+import type { LucideProps } from "lucide-react";
 
 interface DraggableNodeProps extends React.PropsWithChildren {
   type: string;
+  title: string;
+  description: string;
+  Icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
 }
 
-export const DraggableNode = ({ children, type }: DraggableNodeProps) => {
+export const DraggableNode = ({
+  children,
+  type,
+  title,
+  description,
+  Icon,
+}: DraggableNodeProps) => {
   const draggableRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 });
   const { setNodes, screenToFlowPosition } = useReactFlow();
@@ -45,7 +62,11 @@ export const DraggableNode = ({ children, type }: DraggableNodeProps) => {
         id: crypto.randomUUID(),
         type: nodeType,
         position,
-        data: {},
+        data: {
+          title,
+          description,
+          Icon,
+        },
       };
       setNodes((nds) => nds.concat(newNode));
     }

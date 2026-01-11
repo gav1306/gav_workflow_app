@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { SIDEBAR_NODES } from "../../utils/const";
+import { NODES } from "../../utils/const";
 import { DraggableNode } from "../ui/draggable-node";
 import { GripVertical } from "lucide-react";
 
@@ -20,15 +20,21 @@ export const PipelineSidebar = () => {
           <SidebarGroupLabel className="">Core Nodes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {SIDEBAR_NODES.map((item) => (
-                <DraggableNode key={item.type} type={item.type}>
+              {NODES.map((item) => (
+                <DraggableNode
+                  key={item.type}
+                  type={item.type}
+                  title={item.title}
+                  description={item.description}
+                  Icon={item.Icon}
+                >
                   <SidebarMenuItem>
                     <SidebarMenuButton
                       size="lg"
                       className="h-16 flex gap-2 group/item"
                     >
                       <div className="flex items-center justify-center border rounded-sm p-2.5 bg-[#fef5fa]">
-                        <item.icon className="text-primary group-hover/item:hidden" />
+                        <item.Icon className="text-primary group-hover/item:hidden" />
                         <GripVertical className="text-primary hidden group-hover/item:block" />
                       </div>
                       <div className="flex flex-col">
@@ -36,7 +42,7 @@ export const PipelineSidebar = () => {
                           {item.title}
                         </span>
                         <span className="text-wrap line-clamp-2 text-xs text-muted-foreground font-light">
-                          {item.text}
+                          {item.description}
                         </span>
                       </div>
                     </SidebarMenuButton>
