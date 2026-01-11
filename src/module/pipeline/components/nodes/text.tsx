@@ -1,4 +1,3 @@
-import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
 import {
   Position,
@@ -7,13 +6,12 @@ import {
   type NodeProps,
   type Node as NodeType,
 } from "@xyflow/react";
-import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { Field, FieldLabel } from "@/components/ui/field";
 import type {
   CustomEdgeType,
   CustomNodeType,
+  NodeDataType,
   NodeTypes,
-  OutputTypes,
 } from "../../types";
 import {
   Mention,
@@ -25,17 +23,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { CustomHandle } from "../ui/custom-handle";
 
 export type TextNode = NodeType<
-  {
-    title: string;
-    description: string;
-    Icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
-    name: string;
+  NodeDataType & {
     variables: {
       text: string;
     };
-    output: { name: string; type: OutputTypes }[];
   },
   NodeTypes
 >;

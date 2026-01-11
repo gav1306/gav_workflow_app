@@ -1,4 +1,3 @@
-import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
 import {
   Position,
@@ -6,7 +5,7 @@ import {
   type NodeProps,
   type Node as NodeType,
 } from "@xyflow/react";
-import type { ForwardRefExoticComponent, RefAttributes } from "react";
+
 import { Field, FieldLabel } from "@/components/ui/field";
 
 import {
@@ -20,23 +19,16 @@ import { OUTPUT_TYPE, OUTPUT_TYPE_LABELS } from "../../utils/const";
 import type {
   CustomEdgeType,
   CustomNodeType,
+  NodeDataType,
   NodeTypes,
-  OutputTypes,
 } from "../../types";
 import { CustomHandle } from "../ui/custom-handle";
 
 export type InputNode = NodeType<
-  {
-    title: string;
-    description: string;
-    Icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
-    name: string;
+  NodeDataType & {
     variables: {
       input: string;
     };
-    output: { name: string; type: OutputTypes }[];
   },
   NodeTypes
 >;

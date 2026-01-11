@@ -2,7 +2,7 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeText,
-  getBezierPath,
+  getSmoothStepPath,
   useReactFlow,
   type Edge,
   type EdgeProps,
@@ -23,13 +23,14 @@ export const CustomEdge = ({
   sourcePosition,
   targetPosition,
 }: EdgeProps<CustomEdge>) => {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
+    borderRadius: 10,
   });
   const { setEdges } = useReactFlow<CustomNodeType, CustomEdgeType>();
   const onEdgeClick = () => {
@@ -70,8 +71,10 @@ export const CustomEdge = ({
         markerEnd="url(#selected-marker)"
         style={{
           stroke: "#db2475",
-          strokeWidth: 4,
-          strokeDasharray: "6",
+          opacity: 0.6,
+          strokeWidth: 2,
+          strokeDasharray: "4",
+          animation: "dashdraw 0.5s linear infinite",
         }}
         label={label}
       />

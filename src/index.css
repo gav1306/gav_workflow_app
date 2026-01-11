@@ -124,3 +124,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes dashdraw {
+  to {
+    stroke-dashoffset: -12;
+  }
+}

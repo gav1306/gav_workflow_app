@@ -1,25 +1,16 @@
-import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
 import { Position, type NodeProps, type Node as NodeType } from "@xyflow/react";
-import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
-import type { NodeTypes, OutputTypes } from "../../types";
+import type { NodeDataType, NodeTypes } from "../../types";
 import { CustomHandle } from "../ui/custom-handle";
 
 export type AskAiNode = NodeType<
-  {
-    title: string;
-    description: string;
-    Icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
-    name: string;
+  NodeDataType & {
     variables: {
       prompt: string;
       context: string;
     };
-    output: { name: string; type: OutputTypes }[];
   },
   NodeTypes
 >;
