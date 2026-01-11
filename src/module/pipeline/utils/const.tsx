@@ -42,7 +42,7 @@ export const NODES = [
     description:
       "Exit point for passing values out of flow. Useful for webhooks and subflows.",
     output: [],
-    initialVariables: null,
+    initialVariables: { value: "", type: OUTPUT_TYPE.STRING },
     Component: OutputNode,
   },
   {
@@ -60,8 +60,8 @@ export const NODES = [
     initialVariables: {
       prompt: "",
       context: "",
-      response: "",
       model: "gpt-5-nano",
+      response: "",
     },
     Component: AskAiNode,
   },

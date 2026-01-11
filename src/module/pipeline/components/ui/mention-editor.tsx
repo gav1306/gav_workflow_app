@@ -28,12 +28,10 @@ export const MentionEditor = ({ nodeId, onChange }: MentionEditorProps) => {
   });
 
   const availableVariables = variableNodes.flatMap((node) => {
-    return node.data.variables
-      ? Object.keys(node.data.variables).map((variable) => ({
-          value: `${node.data.name}.${variable}`,
-          label: `${node.data.name}.${variable}`,
-        }))
-      : [];
+    return node.data.output.map((variable) => ({
+      value: `${node.data.name}.${variable.name}`,
+      label: `${node.data.name}.${variable.name}`,
+    }));
   });
 
   const disconnectedVariables = useMemo(() => {
