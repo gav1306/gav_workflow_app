@@ -7,14 +7,22 @@ import {
 } from "react";
 import { useDraggable } from "@neodrag/react";
 import type { LucideProps } from "lucide-react";
+import type {
+  CustomNodeType,
+  NodeTypes,
+  OutputTypes,
+  VariableType,
+} from "../../types";
 
 interface DraggableNodeProps extends React.PropsWithChildren {
-  type: string;
+  type: NodeTypes;
   title: string;
   description: string;
   Icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
+  initialVariables: VariableType;
+  output: { name: string; type: OutputTypes }[];
 }
 
 export const DraggableNode = ({
@@ -23,10 +31,13 @@ export const DraggableNode = ({
   title,
   description,
   Icon,
+  initialVariables,
+  output,
 }: DraggableNodeProps) => {
   const draggableRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 });
-  const { setNodes, screenToFlowPosition } = useReactFlow();
+  const { setNodes, screenToFlowPosition, getNodes } =
+    useReactFlow<CustomNodeType>();
 
   useDraggable(draggableRef as React.RefObject<HTMLElement>, {
     position: position,
@@ -45,7 +56,19 @@ export const DraggableNode = ({
     },
   });
 
-  const handleNodeDrop = (nodeType: string, screenPosition: XYPosition) => {
+  const handleNodeDrop = (nodeType: NodeTypes, screenPosition: XYPosition) => {
+    const existingNodes = getNodes();
+    const existingTypeNodes = existingNodes.filter(
+      (node) => node.type === nodeType
+    );
+    let nodeName = `${nodeType}_0`;
+    if (existingTypeNodes.length) {
+      const latestNode = existingTypeNodes[existingTypeNodes.length - 1];
+      const nameParts = latestNode.data.name.split("_") || [];
+      const latestIndex =
+        nameParts.length > 1 ? parseInt(nameParts[nameParts.length - 1]) : -1;
+      nodeName = `${nodeType}_${latestIndex + 1}`;
+    }
     const flow = document.querySelector(".react-flow");
     const flowRect = flow?.getBoundingClientRect();
     const isInFlow =
@@ -66,6 +89,9 @@ export const DraggableNode = ({
           title,
           description,
           Icon,
+          name: nodeName,
+          variables: initialVariables,
+          output,
         },
       };
       setNodes((nds) => nds.concat(newNode));

@@ -8,18 +8,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Field, FieldSet } from "@/components/ui/field";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { CopyPlus, Trash2, type LucideProps } from "lucide-react";
-import type {
-  ForwardRefExoticComponent,
-  PropsWithChildren,
-  RefAttributes,
+import {
+  useEffect,
+  useState,
+  type ForwardRefExoticComponent,
+  type PropsWithChildren,
+  type RefAttributes,
 } from "react";
+import type { OutputTypes } from "../../types";
+import { OUTPUT_TYPE_LABELS } from "../../utils/const";
 
 interface NodeProps extends PropsWithChildren {
   title: string;
@@ -27,15 +33,30 @@ interface NodeProps extends PropsWithChildren {
   Icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
+  name: string;
+  output: { name: string; type: OutputTypes }[];
 }
 
-export const Node = ({ title, description, Icon, children }: NodeProps) => {
-  const reactFlowNode = document.querySelector(".react-flow__node");
+export const Node = ({
+  title,
+  description,
+  Icon,
+  name,
+  output,
+  children,
+}: NodeProps) => {
+  const [reactFlowNode, setReactFlowNode] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const node = document.querySelector(".react-flow__node") as HTMLElement;
+    setReactFlowNode(node);
+  }, []);
+
   return (
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger asChild>
-        <Card className="min-w-sm border rounded-sm py-0">
-          <CardHeader className="flex items-center gap-4 p-5 border-3 bg-linear-to-b from-[#fff0f8] to-white border-white rounded-sm">
+        <Card className="w-sm border rounded-sm py-0">
+          <CardHeader className="flex items-center gap-4 px-5 pt-5 border-3 bg-linear-to-b from-[#fff0f8] to-white border-white rounded-sm">
             <div className="flex items-center justify-center border-none rounded-sm bg-[#ffd5ec] p-2">
               <Icon width={30} height={30} className="text-[#510424]" />
             </div>
@@ -46,7 +67,20 @@ export const Node = ({ title, description, Icon, children }: NodeProps) => {
               </CardDescription>
             </div>
           </CardHeader>
-          <CardContent>{children}</CardContent>
+          <CardContent className="pb-6">
+            <div>
+              <FieldSet>
+                <Field>
+                  <Input
+                    readOnly
+                    className="bg-primary/10 text-primary"
+                    value={name}
+                  />
+                </Field>
+                {children}
+              </FieldSet>
+            </div>
+          </CardContent>
         </Card>
       </HoverCardTrigger>
       <HoverCardContent
@@ -70,7 +104,7 @@ export const Node = ({ title, description, Icon, children }: NodeProps) => {
         </ButtonGroup>
       </HoverCardContent>
       <HoverCardContent
-        className="min-w-sm flex flex-col gap-2 p-2"
+        className="w-sm flex flex-col gap-2 p-2"
         side="right"
         align="end"
         sideOffset={7}
@@ -78,7 +112,15 @@ export const Node = ({ title, description, Icon, children }: NodeProps) => {
       >
         <span className="text-sm">Output</span>
         <Separator />
-        <Badge variant="outline">Text</Badge>
+        <div className="flex flex-wrap gap-2">
+          {output.map((opt) => {
+            return (
+              <Badge variant="outline" className="border-primary text-primary">
+                {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
+              </Badge>
+            );
+          })}
+        </div>
       </HoverCardContent>
     </HoverCard>
   );

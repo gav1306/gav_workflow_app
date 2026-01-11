@@ -18,8 +18,6 @@ export const PipelinePage = () => {
   const onConnect: OnConnect = (connection) =>
     setEdges((eds) => addEdge(connection, eds));
 
-  console.log(nodes);
-
   return (
     <section className="w-dvw h-dvh flex items-center justify-center">
       <ReactFlow

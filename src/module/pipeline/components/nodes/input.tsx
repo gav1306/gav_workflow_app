@@ -1,23 +1,78 @@
 import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
-import type { Node as NodeType } from "@xyflow/react";
+import {
+  useReactFlow,
+  type NodeProps,
+  type Node as NodeType,
+} from "@xyflow/react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import { Field, FieldLabel } from "@/components/ui/field";
 
-type InputNodeProps = NodeType<
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { OUTPUT_TYPE, OUTPUT_TYPE_LABELS } from "../../utils/const";
+import type { NodeTypes, OutputTypes } from "../../types";
+
+export type InputNode = NodeType<
   {
     title: string;
     description: string;
     Icon: ForwardRefExoticComponent<
       Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
     >;
+    name: string;
+    variables: {
+      input: string;
+    };
+    output: { name: string; type: OutputTypes }[];
   },
-  "input_node"
+  NodeTypes
 >;
 
-export const InputNode = ({ data }: InputNodeProps) => {
+export const InputNode = ({ data, id }: NodeProps<InputNode>) => {
+  const { updateNodeData, getNodes } = useReactFlow();
+
+  const existingNodes = getNodes();
+  console.log("Existing Nodes: ", existingNodes);
+
+  const addInputTypeHandler = (value: string) => {
+    updateNodeData(id, {
+      ...data,
+      variables: { ...data.variables, input: value },
+    });
+  };
   return (
-    <Node title={data.title} description={data.description} Icon={data.Icon}>
-      123
+    <Node
+      title={data.title}
+      description={data.description}
+      Icon={data.Icon}
+      name={data.name}
+      output={data.output}
+    >
+      <Field>
+        <FieldLabel htmlFor="node_type">Type</FieldLabel>
+        <Select
+          defaultValue={OUTPUT_TYPE.STRING}
+          onValueChange={addInputTypeHandler}
+          value={data.variables.input}
+        >
+          <SelectTrigger id="node_type">
+            <SelectValue placeholder="Select Type" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(OUTPUT_TYPE).map((type) => (
+              <SelectItem key={type} value={type}>
+                {OUTPUT_TYPE_LABELS[type]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </Field>
     </Node>
   );
 };

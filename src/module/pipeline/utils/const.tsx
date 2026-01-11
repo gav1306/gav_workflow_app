@@ -3,6 +3,7 @@ import { InputNode } from "../components/nodes/input";
 import { OutputNode } from "../components/nodes/output";
 import { AskAiNode } from "../components/nodes/ask-ai";
 import { TextNode } from "../components/nodes/text";
+import type { NodeTypes } from "../types";
 
 export const OUTPUT_TYPE = {
   STRING: "string",
@@ -29,7 +30,8 @@ export const NODES = [
     type: NODE_TYPES.INPUT,
     description:
       "Entry point for input values in flow. Essential for taking inputs in subflows.",
-    output: [{ name: "text", type: OUTPUT_TYPE.STRING }],
+    output: [{ name: "input", type: OUTPUT_TYPE.STRING }],
+    initialVariables: { input: OUTPUT_TYPE.STRING },
     Component: InputNode,
   },
   {
@@ -38,7 +40,8 @@ export const NODES = [
     type: NODE_TYPES.OUTPUT,
     description:
       "Exit point for passing values out of flow. Useful for webhooks and subflows.",
-    output: [{ name: "text", type: OUTPUT_TYPE.STRING }],
+    output: [{ name: "output", type: OUTPUT_TYPE.STRING }],
+    initialVariables: { output: "" },
     Component: OutputNode,
   },
   {
@@ -47,7 +50,14 @@ export const NODES = [
     type: NODE_TYPES.ASK_AI,
     description:
       "Prompt an Al language model (includes deep research). Provide all relevant context and use detailed prompts to get the best results",
-    output: [{ name: "text", type: OUTPUT_TYPE.STRING }],
+    output: [
+      { name: "prompt", type: OUTPUT_TYPE.STRING },
+      { name: "context", type: OUTPUT_TYPE.STRING },
+    ],
+    initialVariables: {
+      prompt: "",
+      context: "",
+    },
     Component: AskAiNode,
   },
   {
@@ -57,6 +67,7 @@ export const NODES = [
     description:
       "Accepts Text from upstream nodes and allows you to write additional text / concatenate different texts to pass to downstream nodes.",
     output: [{ name: "text", type: OUTPUT_TYPE.STRING }],
+    initialVariables: { text: "" },
     Component: TextNode,
   },
 ];
@@ -75,4 +86,4 @@ export const OUTPUT_TYPE_LABELS = {
 export const NODE_COMPONENTS = NODES.reduce((acc, node) => {
   acc[node.type] = node.Component;
   return acc;
-}, {} as Record<(typeof NODE_TYPES)[keyof typeof NODE_TYPES], React.FC<any>>);
+}, {} as Record<NodeTypes, React.FC<any>>);

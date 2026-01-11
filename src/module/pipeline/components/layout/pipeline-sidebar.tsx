@@ -27,6 +27,8 @@ export const PipelineSidebar = () => {
                   title={item.title}
                   description={item.description}
                   Icon={item.Icon}
+                  initialVariables={item.initialVariables}
+                  output={item.output}
                 >
                   <SidebarMenuItem>
                     <SidebarMenuButton
