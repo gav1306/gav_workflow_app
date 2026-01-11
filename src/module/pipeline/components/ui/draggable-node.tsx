@@ -14,6 +14,7 @@ import type {
   OutputTypes,
   VariableType,
 } from "../../types";
+import { useNodeName } from "../hooks/use-node-name";
 
 interface DraggableNodeProps extends React.PropsWithChildren {
   type: NodeTypes;
@@ -37,10 +38,11 @@ export const DraggableNode = ({
 }: DraggableNodeProps) => {
   const draggableRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 });
-  const { setNodes, screenToFlowPosition, getNodes } = useReactFlow<
+  const { setNodes, screenToFlowPosition } = useReactFlow<
     CustomNodeType,
     CustomEdgeType
   >();
+  const { generateNodeName } = useNodeName();
 
   useDraggable(draggableRef as React.RefObject<HTMLElement>, {
     position: position,
@@ -60,18 +62,7 @@ export const DraggableNode = ({
   });
 
   const handleNodeDrop = (nodeType: NodeTypes, screenPosition: XYPosition) => {
-    const existingNodes = getNodes();
-    const existingTypeNodes = existingNodes.filter(
-      (node) => node.type === nodeType
-    );
-    let nodeName = `${nodeType}_0`;
-    if (existingTypeNodes.length) {
-      const latestNode = existingTypeNodes[existingTypeNodes.length - 1];
-      const nameParts = latestNode.data.name.split("_") || [];
-      const latestIndex =
-        nameParts.length > 1 ? parseInt(nameParts[nameParts.length - 1]) : -1;
-      nodeName = `${nodeType}_${latestIndex + 1}`;
-    }
+    const nodeName = generateNodeName(type);
     const flow = document.querySelector(".react-flow");
     const flowRect = flow?.getBoundingClientRect();
     const isInFlow =

@@ -49,6 +49,7 @@ export const InputNode = ({ data, id }: NodeProps<InputNode>) => {
         description={data.description}
         Icon={data.Icon}
         name={data.name}
+        id={id}
         output={data.output}
       >
         <Field>

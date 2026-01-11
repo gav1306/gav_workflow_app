@@ -24,8 +24,21 @@ import {
   type PropsWithChildren,
   type RefAttributes,
 } from "react";
-import type { OutputTypes } from "../../types";
+import type { CustomEdgeType, CustomNodeType, OutputTypes } from "../../types";
 import { OUTPUT_TYPE_LABELS } from "../../utils/const";
+import { useReactFlow } from "@xyflow/react";
+import { useNodeName } from "../hooks/use-node-name";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useDisclosure } from "../hooks/use-disclosure";
 
 interface NodeProps extends PropsWithChildren {
   title: string;
@@ -34,6 +47,7 @@ interface NodeProps extends PropsWithChildren {
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   name: string;
+  id: string;
   output: { name: string; type: OutputTypes }[];
 }
 
@@ -42,90 +56,150 @@ export const Node = ({
   description,
   Icon,
   name,
+  id,
   output,
   children,
 }: NodeProps) => {
   const [reactFlowNode, setReactFlowNode] = useState<HTMLElement | null>(null);
+  const { setNodes, setEdges, getNode } = useReactFlow<
+    CustomNodeType,
+    CustomEdgeType
+  >();
+  const { generateNodeName } = useNodeName();
+  const deleteNodeDisclosure = useDisclosure();
 
   useEffect(() => {
     const node = document.querySelector(".react-flow__node") as HTMLElement;
     setReactFlowNode(node);
   }, []);
 
+  const deleteNodeHandler = () => {
+    setNodes((nodes) => nodes.filter((node) => node.id !== id));
+    setEdges((edges) =>
+      edges.filter((edge) => edge.source !== id && edge.target !== id)
+    );
+    deleteNodeDisclosure.onClose();
+  };
+
+  const copyNodeHandler = () => {
+    const currentNode = getNode(id);
+    if (!currentNode) return;
+
+    const newNodeName = generateNodeName(currentNode.type);
+
+    const newNode: CustomNodeType = {
+      ...currentNode,
+      id: crypto.randomUUID(),
+      position: {
+        x: currentNode.position.x + 400,
+        y: currentNode.position.y + 200,
+      },
+      data: {
+        ...currentNode.data,
+        name: newNodeName,
+      },
+      selected: false,
+    } as CustomNodeType;
+    setNodes((nds) => nds.concat(newNode));
+  };
+
   return (
-    <HoverCard openDelay={100} closeDelay={100}>
-      <HoverCardTrigger asChild>
-        <Card className="w-sm border rounded-sm py-0">
-          <CardHeader className="flex items-center gap-4 px-5 pt-5 border-3 bg-linear-to-b from-[#fff0f8] to-white border-white rounded-sm">
-            <div className="flex items-center justify-center border-none rounded-sm bg-[#ffd5ec] p-2">
-              <Icon width={30} height={30} className="text-[#510424]" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <CardTitle className="capitalize">{title}</CardTitle>
-              <CardDescription className="font-light text-xs">
-                {description}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-6">
-            <FieldSet>
-              <Field>
-                <Input
-                  readOnly
-                  className="bg-primary/10 text-primary"
-                  value={name}
-                />
-              </Field>
-              {children}
-            </FieldSet>
-          </CardContent>
-        </Card>
-      </HoverCardTrigger>
-      <HoverCardContent
-        className="p-2 w-auto"
-        side="top"
-        align="end"
-        sideOffset={7}
-        container={reactFlowNode}
-      >
-        <ButtonGroup>
-          <Button
-            variant="outline"
-            size="icon"
-            className="text-destructive border-destructive hover:bg-destructive/10 hover:text-destructive"
-          >
-            <Trash2 />
-          </Button>
-          <Button variant="outline" size="icon">
-            <CopyPlus />
-          </Button>
-        </ButtonGroup>
-      </HoverCardContent>
-      {!!output.length && (
+    <>
+      <HoverCard openDelay={100} closeDelay={100}>
+        <HoverCardTrigger asChild>
+          <Card className="w-sm border rounded-sm py-0">
+            <CardHeader className="flex items-center gap-4 px-5 pt-5 border-3 bg-linear-to-b from-[#fff0f8] to-white border-white rounded-sm">
+              <div className="flex items-center justify-center border-none rounded-sm bg-[#ffd5ec] p-2">
+                <Icon width={30} height={30} className="text-[#510424]" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <CardTitle className="capitalize">{title}</CardTitle>
+                <CardDescription className="font-light text-xs">
+                  {description}
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="pb-6">
+              <FieldSet>
+                <Field>
+                  <Input
+                    readOnly
+                    className="bg-primary/10 text-primary"
+                    value={name}
+                  />
+                </Field>
+                {children}
+              </FieldSet>
+            </CardContent>
+          </Card>
+        </HoverCardTrigger>
         <HoverCardContent
-          className="max-w-sm flex flex-col gap-2 p-2"
-          side="right"
+          className="p-2 w-auto"
+          side="top"
           align="end"
           sideOffset={7}
           container={reactFlowNode}
         >
-          <span className="text-sm">Output</span>
-          <Separator />
-          <div className="flex flex-wrap gap-2">
-            {output.map((opt, index) => {
-              return (
-                <Badge
-                  key={`${opt.name}-${opt.type}-${index}`}
-                  variant="outline"
-                  className="border-primary text-primary"
-                >
-                  {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
-                </Badge>
-              );
-            })}
-          </div>
+          <ButtonGroup>
+            <Button
+              variant="outline"
+              size="icon"
+              className="text-destructive border-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={deleteNodeDisclosure.onOpen}
+            >
+              <Trash2 />
+            </Button>
+            <Button variant="outline" size="icon" onClick={copyNodeHandler}>
+              <CopyPlus />
+            </Button>
+          </ButtonGroup>
         </HoverCardContent>
-      )}
-    </HoverCard>
+        {!!output.length && (
+          <HoverCardContent
+            className="max-w-sm flex flex-col gap-2 p-2"
+            side="right"
+            align="end"
+            sideOffset={7}
+            container={reactFlowNode}
+          >
+            <span className="text-sm">Output</span>
+            <Separator />
+            <div className="flex flex-wrap gap-2">
+              {output.map((opt, index) => {
+                return (
+                  <Badge
+                    key={`${opt.name}-${opt.type}-${index}`}
+                    variant="outline"
+                    className="border-primary text-primary"
+                  >
+                    {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
+                  </Badge>
+                );
+              })}
+            </div>
+          </HoverCardContent>
+        )}
+      </HoverCard>
+      <AlertDialog
+        open={deleteNodeDisclosure.isOpen}
+        onOpenChange={deleteNodeDisclosure.onToggle}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the
+              node and remove all its connections.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteNodeHandler}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };

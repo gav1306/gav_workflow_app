@@ -58,6 +58,7 @@ export const OutputNode = ({ data, id }: NodeProps<OutputNode>) => {
         description={data.description}
         Icon={data.Icon}
         name={data.name}
+        id={id}
         output={data.output}
       >
         <Field>

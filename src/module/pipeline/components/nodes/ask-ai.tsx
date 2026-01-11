@@ -66,6 +66,7 @@ export const AskAiNode = ({ data, id }: NodeProps<AskAiNode>) => {
         description={data.description}
         Icon={data.Icon}
         name={data.name}
+        id={id}
         output={data.output}
       >
         <Field>
