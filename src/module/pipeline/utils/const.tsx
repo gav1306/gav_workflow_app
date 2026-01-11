@@ -1,8 +1,17 @@
-import { ArrowDownToLine, ArrowUpFromLine, Cpu, FileText } from "lucide-react";
+import {
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  Cpu,
+  FileText,
+  ScanSearch,
+  CaseSensitive,
+} from "lucide-react";
 import { InputNode } from "../components/nodes/input";
 import { OutputNode } from "../components/nodes/output";
 import { AskAiNode } from "../components/nodes/ask-ai";
 import { TextNode } from "../components/nodes/text";
+import { AnalyzeImageNode } from "../components/nodes/analyze-image";
+import { TextFormatterNode } from "../components/nodes/text-formatter";
 import type { NodeTypes } from "../types";
 import { CustomEdge } from "../components/ui/custom-edge";
 
@@ -22,7 +31,36 @@ export const NODE_TYPES = {
   OUTPUT: "output_node",
   ASK_AI: "ask_ai_node",
   TEXT: "text_node",
+  ANALYZE_IMAGE: "analyze_image_node",
+  TEXT_FORMATTER: "text_formatter_node",
 } as const;
+
+export const AI_MODELS = {
+  CLAUDE_OPUS_4_5: "claude-opus-4.5",
+  CLAUDE_SONNET_4_5: "claude-sonnet-4.5",
+  GPT_5: "gpt-5",
+  GPT_5_MINI: "gpt-5-mini",
+  GPT_5_NANO: "gpt-5-nano",
+  O3_MINI: "o3-mini",
+  O1: "o1",
+} as const;
+
+export const TEXT_FORMATTERS = {
+  UPPERCASE: "uppercase",
+  LOWERCASE: "lowercase",
+  TRUNCATE: "truncate",
+  TRIM: "trim",
+} as const;
+
+export const TEXT_FORMATTER_OPTIONS = [
+  { value: TEXT_FORMATTERS.UPPERCASE, label: "Uppercase" },
+  { value: TEXT_FORMATTERS.LOWERCASE, label: "Lowercase" },
+  { value: TEXT_FORMATTERS.TRUNCATE, label: "Truncate" },
+  {
+    value: TEXT_FORMATTERS.TRIM,
+    label: "Trim (Remove leading/trailing whitespace)",
+  },
+] as const;
 
 export const NODES = [
   {
@@ -60,7 +98,7 @@ export const NODES = [
     initialVariables: {
       prompt: "",
       context: "",
-      model: "gpt-5-nano",
+      model: AI_MODELS.GPT_5_MINI,
       response: "",
     },
     Component: AskAiNode,
@@ -74,6 +112,40 @@ export const NODES = [
     output: [{ name: "text", type: OUTPUT_TYPE.STRING }],
     initialVariables: { text: "" },
     Component: TextNode,
+  },
+  {
+    Icon: ScanSearch,
+    title: "analyze image",
+    type: NODE_TYPES.ANALYZE_IMAGE,
+    description:
+      "Analyze images using AI vision models. Upload an image and provide a prompt to get detailed analysis results.",
+    output: [
+      { name: "image", type: OUTPUT_TYPE.FILE },
+      { name: "prompt", type: OUTPUT_TYPE.STRING },
+      { name: "model", type: OUTPUT_TYPE.STRING },
+      { name: "analysis", type: OUTPUT_TYPE.STRING },
+    ],
+    initialVariables: {
+      image: "",
+      prompt: "",
+      model: AI_MODELS.GPT_5_NANO,
+      analysis: "",
+    },
+    Component: AnalyzeImageNode,
+  },
+  {
+    Icon: CaseSensitive,
+    title: "text formatter",
+    type: NODE_TYPES.TEXT_FORMATTER,
+    description:
+      "Format text with various transformations like uppercase, lowercase, truncate, or trim whitespace.",
+    output: [{ name: "output", type: OUTPUT_TYPE.STRING }],
+    initialVariables: {
+      input: "",
+      formatter: TEXT_FORMATTERS.UPPERCASE,
+      output: "",
+    },
+    Component: TextFormatterNode,
   },
 ];
 
@@ -95,16 +167,6 @@ export const NODE_COMPONENTS = NODES.reduce((acc, node) => {
 
 export const EDGE_COMPONENTS = {
   custom: CustomEdge,
-} as const;
-
-export const AI_MODELS = {
-  CLAUDE_OPUS_4_5: "claude-opus-4.5",
-  CLAUDE_SONNET_4_5: "claude-sonnet-4.5",
-  GPT_5: "gpt-5",
-  GPT_5_MINI: "gpt-5-mini",
-  GPT_5_NANO: "gpt-5-nano",
-  O3_MINI: "o3-mini",
-  O1: "o1",
 } as const;
 
 export const AI_MODELS_OPTIONS = [
