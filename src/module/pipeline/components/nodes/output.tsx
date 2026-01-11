@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OUTPUT_TYPE, OUTPUT_TYPE_LABELS } from "../../utils/const";
-import { Editor, EditorContainer } from "@/components/ui/editor";
 import type { NodeTypes, OutputTypes } from "../../types";
 
 export type OutputNode = NodeType<
@@ -53,9 +52,6 @@ export const OutputNode = ({ data }: NodeProps<OutputNode>) => {
       </Field>
       <Field>
         <FieldLabel htmlFor="variables">Type</FieldLabel>
-        <EditorContainer className="border p-2 rounded-sm" id="variables">
-          <Editor placeholder="Type {{ to utilize  variables" variant="ai" />
-        </EditorContainer>
       </Field>
     </Node>
   );

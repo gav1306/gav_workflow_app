@@ -3,7 +3,6 @@ import { Node } from "../ui/node";
 import type { NodeProps, Node as NodeType } from "@xyflow/react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { Field, FieldLabel } from "@/components/ui/field";
-import { Editor, EditorContainer } from "@/components/ui/editor";
 import { Textarea } from "@/components/ui/textarea";
 import type { NodeTypes, OutputTypes } from "../../types";
 
@@ -31,13 +30,6 @@ export const AskAiNode = ({ data }: NodeProps<AskAiNode>) => {
     >
       <Field>
         <FieldLabel htmlFor="variables">Type</FieldLabel>
-        <EditorContainer className="border p-2 rounded-sm">
-          <Editor
-            placeholder="Type {{ to utilize  variables"
-            id="variables"
-            variant="ai"
-          />
-        </EditorContainer>
       </Field>
       <Field>
         <FieldLabel htmlFor="prompt">Prompt</FieldLabel>

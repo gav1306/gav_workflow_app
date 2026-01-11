@@ -2,7 +2,6 @@ import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
 import type { NodeProps, Node as NodeType } from "@xyflow/react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
-import { Editor, EditorContainer } from "@/components/ui/editor";
 import { Field, FieldLabel } from "@/components/ui/field";
 import type { NodeTypes, OutputTypes } from "../../types";
 
@@ -30,9 +29,6 @@ export const TextNode = ({ data }: NodeProps<TextNode>) => {
     >
       <Field>
         <FieldLabel htmlFor="variables">Type</FieldLabel>
-        <EditorContainer className="border p-2 rounded-sm" id="variables">
-          <Editor placeholder="Type {{ to utilize  variables" variant="ai" />
-        </EditorContainer>
       </Field>
     </Node>
   );
