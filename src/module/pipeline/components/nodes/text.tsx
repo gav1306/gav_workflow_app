@@ -1,7 +1,6 @@
 import { Node } from "../ui/node";
 import {
   Position,
-  useNodes,
   useReactFlow,
   type NodeProps,
   type Node as NodeType,
@@ -13,14 +12,9 @@ import type {
   NodeDataType,
   NodeTypes,
 } from "../../types";
-import {
-  Mention,
-  MentionContent,
-  MentionInput,
-  MentionItem,
-} from "@/components/ui/mention";
-import { Textarea } from "@/components/ui/textarea";
+
 import { CustomHandle } from "../ui/custom-handle";
+import { MentionEditor } from "../ui/mention-editor";
 
 export type TextNode = NodeType<
   NodeDataType & {
@@ -32,30 +26,7 @@ export type TextNode = NodeType<
 >;
 
 export const TextNode = ({ data, id }: NodeProps<TextNode>) => {
-  const allNodes = useNodes<CustomNodeType>();
   const { updateNodeData } = useReactFlow<CustomNodeType, CustomEdgeType>();
-
-  const variableNodes = allNodes.filter((node) => {
-    if (node.id !== id) {
-      return node;
-    }
-  });
-
-  const availableVariables = variableNodes.flatMap((node) => {
-    return node.data.variables
-      ? Object.keys(node.data.variables).map((variable) => ({
-          value: `${node.data.name}.${variable}`,
-          label: `${node.data.name}.${variable}`,
-        }))
-      : [];
-  });
-
-  const verifyNodeConnectionHandler = (selectedVariables: string[]) => {
-    selectedVariables.forEach((variable) => {
-      const [nodeName, variableKey] = variable.split(".");
-      console.log({ nodeName, variableKey });
-    });
-  };
 
   const addTextChangeHandler = (value: string) => {
     updateNodeData(id, {
@@ -75,25 +46,7 @@ export const TextNode = ({ data, id }: NodeProps<TextNode>) => {
       >
         <Field>
           <FieldLabel htmlFor="variables">Text</FieldLabel>
-          <Mention
-            onValueChange={verifyNodeConnectionHandler}
-            onInputValueChange={addTextChangeHandler}
-            trigger="$"
-            className="w-full max-w-100"
-          >
-            <MentionInput placeholder="Type $ to add variables..." asChild>
-              <Textarea />
-            </MentionInput>
-            {!!availableVariables.length && (
-              <MentionContent>
-                {availableVariables.map((variable) => (
-                  <MentionItem key={variable.value} value={variable.value}>
-                    <span className="text-sm">{variable.label}</span>
-                  </MentionItem>
-                ))}
-              </MentionContent>
-            )}
-          </Mention>
+          <MentionEditor nodeId={id} onChange={addTextChangeHandler} />
         </Field>
       </Node>
       <CustomHandle type="target" position={Position.Left} />

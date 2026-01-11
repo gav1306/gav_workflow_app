@@ -54,10 +54,14 @@ export const NODES = [
     output: [
       { name: "prompt", type: OUTPUT_TYPE.STRING },
       { name: "context", type: OUTPUT_TYPE.STRING },
+      { name: "model", type: OUTPUT_TYPE.STRING },
+      { name: "response", type: OUTPUT_TYPE.STRING },
     ],
     initialVariables: {
       prompt: "",
       context: "",
+      response: "",
+      model: "gpt-5-nano",
     },
     Component: AskAiNode,
   },
@@ -92,3 +96,44 @@ export const NODE_COMPONENTS = NODES.reduce((acc, node) => {
 export const EDGE_COMPONENTS = {
   custom: CustomEdge,
 } as const;
+
+export const AI_MODELS = {
+  CLAUDE_OPUS_4_5: "claude-opus-4.5",
+  CLAUDE_SONNET_4_5: "claude-sonnet-4.5",
+  GPT_5: "gpt-5",
+  GPT_5_MINI: "gpt-5-mini",
+  GPT_5_NANO: "gpt-5-nano",
+  O3_MINI: "o3-mini",
+  O1: "o1",
+} as const;
+
+export const AI_MODELS_OPTIONS = [
+  {
+    value: AI_MODELS.CLAUDE_OPUS_4_5,
+    label: "Claude Opus 4.5",
+  },
+  {
+    value: AI_MODELS.CLAUDE_SONNET_4_5,
+    label: "Claude Sonnet 4.5",
+  },
+  {
+    value: AI_MODELS.GPT_5,
+    label: "GPT-5",
+  },
+  {
+    value: AI_MODELS.GPT_5_MINI,
+    label: "GPT-5 Mini",
+  },
+  {
+    value: AI_MODELS.GPT_5_NANO,
+    label: "GPT-5 Nano",
+  },
+  {
+    value: AI_MODELS.O3_MINI,
+    label: "O3 Mini",
+  },
+  {
+    value: AI_MODELS.O1,
+    label: "O1",
+  },
+] as const;

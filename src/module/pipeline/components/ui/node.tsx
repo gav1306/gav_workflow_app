@@ -68,18 +68,16 @@ export const Node = ({
             </div>
           </CardHeader>
           <CardContent className="pb-6">
-            <div>
-              <FieldSet>
-                <Field>
-                  <Input
-                    readOnly
-                    className="bg-primary/10 text-primary"
-                    value={name}
-                  />
-                </Field>
-                {children}
-              </FieldSet>
-            </div>
+            <FieldSet>
+              <Field>
+                <Input
+                  readOnly
+                  className="bg-primary/10 text-primary"
+                  value={name}
+                />
+              </Field>
+              {children}
+            </FieldSet>
           </CardContent>
         </Card>
       </HoverCardTrigger>
