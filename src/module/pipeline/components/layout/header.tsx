@@ -4,11 +4,52 @@ import { ArrowDownToLine, Play, Save } from "lucide-react";
 import logoIcon from "@/assets/icons/Logo.webp";
 import { Link } from "@tanstack/react-router";
 import { PipelineBreadcrumb } from "../ui/pipeline-breadcrumb";
+import {
+  Panel,
+  useReactFlow,
+  getNodesBounds,
+  getViewportForBounds,
+} from "@xyflow/react";
+import type { CustomEdgeType, CustomNodeType } from "../../types";
+import { toPng } from "html-to-image";
+import { EXPORT_IMAGE_CONFIG } from "../../utils/const";
+import { downloadImage } from "../../utils/helper";
 
 export const Header = () => {
+  const { getNodes } = useReactFlow<CustomNodeType, CustomEdgeType>();
+
+  const downloadPngHandler = () => {
+    const nodesBounds = getNodesBounds(getNodes());
+    const viewport = getViewportForBounds(
+      nodesBounds,
+      EXPORT_IMAGE_CONFIG.WIDTH,
+      EXPORT_IMAGE_CONFIG.HEIGHT,
+      0.5,
+      2,
+      5
+    );
+
+    const pipelineGraphElement = document.querySelector(
+      ".react-flow__viewport"
+    );
+    if (!pipelineGraphElement) return;
+
+    toPng(pipelineGraphElement as HTMLElement, {
+      backgroundColor: "#fff",
+      width: EXPORT_IMAGE_CONFIG.WIDTH,
+      height: EXPORT_IMAGE_CONFIG.HEIGHT,
+      style: {
+        width: `${EXPORT_IMAGE_CONFIG.WIDTH}px`,
+        height: `${EXPORT_IMAGE_CONFIG.HEIGHT}px`,
+        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
+      },
+    }).then((dataUrl) => {
+      downloadImage(dataUrl, "pipeline-graph");
+    });
+  };
   return (
-    <header className="w-full p-4 absolute top-0 left-0 bg-transparent z-10 ">
-      <nav className="w-full flex justify-between">
+    <>
+      <Panel position="top-left">
         <div className="border py-2 px-3 flex gap-2.5 rounded-sm shadow-md bg-white">
           <SidebarTrigger size="icon" />
           <Link to="/" className="h-9 w-9">
@@ -16,12 +57,18 @@ export const Header = () => {
           </Link>
           <PipelineBreadcrumb />
         </div>
+      </Panel>
+      <Panel position="top-right">
         <div className="border py-2 px-3 flex gap-2.5 rounded-sm shadow-md bg-white">
           <Button variant="outline">
             <Save />
             Save
           </Button>
-          <Button variant="outline" className="rounded-sm">
+          <Button
+            variant="outline"
+            onClick={downloadPngHandler}
+            className="rounded-sm"
+          >
             <ArrowDownToLine />
             Download
           </Button>
@@ -29,7 +76,7 @@ export const Header = () => {
             <Play /> Run
           </Button>
         </div>
-      </nav>
-    </header>
+      </Panel>
+    </>
   );
 };

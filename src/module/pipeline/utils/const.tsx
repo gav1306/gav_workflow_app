@@ -265,3 +265,8 @@ export const AI_MODELS_OPTIONS = [
     label: "O1",
   },
 ] as const;
+
+export const EXPORT_IMAGE_CONFIG = {
+  WIDTH: 1024,
+  HEIGHT: 768,
+} as const;
