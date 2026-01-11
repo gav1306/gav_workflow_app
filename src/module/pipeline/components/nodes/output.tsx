@@ -21,6 +21,9 @@ export type OutputNode = NodeType<
       Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
     >;
     name: string;
+    variables: {
+      output: string;
+    };
     output: { name: string; type: OutputTypes }[];
   },
   NodeTypes

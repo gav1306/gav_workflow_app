@@ -14,6 +14,10 @@ export type AskAiNode = NodeType<
       Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
     >;
     name: string;
+    variables: {
+      prompt: string;
+      context: string;
+    };
     output: { name: string; type: OutputTypes }[];
   },
   NodeTypes

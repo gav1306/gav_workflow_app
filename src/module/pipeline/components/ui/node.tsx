@@ -113,9 +113,13 @@ export const Node = ({
         <span className="text-sm">Output</span>
         <Separator />
         <div className="flex flex-wrap gap-2">
-          {output.map((opt) => {
+          {output.map((opt, index) => {
             return (
-              <Badge variant="outline" className="border-primary text-primary">
+              <Badge
+                key={`${opt.name}-${opt.type}-${index}`}
+                variant="outline"
+                className="border-primary text-primary"
+              >
                 {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
               </Badge>
             );

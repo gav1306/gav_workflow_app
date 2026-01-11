@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OUTPUT_TYPE, OUTPUT_TYPE_LABELS } from "../../utils/const";
-import type { NodeTypes, OutputTypes } from "../../types";
+import type { CustomNodeType, NodeTypes, OutputTypes } from "../../types";
 
 export type InputNode = NodeType<
   {
@@ -35,10 +35,7 @@ export type InputNode = NodeType<
 >;
 
 export const InputNode = ({ data, id }: NodeProps<InputNode>) => {
-  const { updateNodeData, getNodes } = useReactFlow();
-
-  const existingNodes = getNodes();
-  console.log("Existing Nodes: ", existingNodes);
+  const { updateNodeData } = useReactFlow<CustomNodeType>();
 
   const addInputTypeHandler = (value: string) => {
     updateNodeData(id, {

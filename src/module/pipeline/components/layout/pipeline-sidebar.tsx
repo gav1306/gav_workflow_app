@@ -35,7 +35,7 @@ export const PipelineSidebar = () => {
                       size="lg"
                       className="h-16 flex gap-2 group/item"
                     >
-                      <div className="flex items-center justify-center border rounded-sm p-2.5 bg-[#fef5fa]">
+                      <div className="flex items-center justify-center border rounded-sm p-2.5 bg-primary/10">
                         <item.Icon className="text-primary group-hover/item:hidden" />
                         <GripVertical className="text-primary hidden group-hover/item:block" />
                       </div>

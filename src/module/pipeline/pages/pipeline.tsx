@@ -27,7 +27,6 @@ export const PipelinePage = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={NODE_COMPONENTS}
-        fitView
       >
         <Background />
         <Controls />

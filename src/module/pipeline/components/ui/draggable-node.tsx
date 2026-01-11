@@ -81,7 +81,7 @@ export const DraggableNode = ({
     if (isInFlow) {
       const position = screenToFlowPosition(screenPosition);
 
-      const newNode = {
+      const newNode: CustomNodeType = {
         id: crypto.randomUUID(),
         type: nodeType,
         position,
@@ -93,7 +93,7 @@ export const DraggableNode = ({
           variables: initialVariables,
           output,
         },
-      };
+      } as CustomNodeType;
       setNodes((nds) => nds.concat(newNode));
     }
   };
