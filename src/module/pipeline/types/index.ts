@@ -1,3 +1,4 @@
+import { CustomEdge } from "./../components/ui/custom-edge";
 import type { InputNode } from "../components/nodes/input";
 import type { AskAiNode } from "../components/nodes/ask-ai";
 import type { OutputNode } from "../components/nodes/output";
@@ -8,7 +9,7 @@ export type CustomNodeType = InputNode | TextNode | AskAiNode | OutputNode;
 export type NodeTypes = (typeof NODE_TYPES)[keyof typeof NODE_TYPES];
 export type InputVariableType = { input: string };
 export type AskAiVariableType = { prompt: string; context: string };
-export type OutputVariableType = { output: string };
+export type OutputVariableType = null;
 export type TextVariableType = { text: string };
 export type VariableType =
   | InputVariableType
@@ -17,3 +18,4 @@ export type VariableType =
   | TextVariableType;
 
 export type OutputTypes = (typeof OUTPUT_TYPE)[keyof typeof OUTPUT_TYPE];
+export type CustomEdgeType = CustomEdge;

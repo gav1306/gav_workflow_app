@@ -1,6 +1,7 @@
 import { type LucideProps } from "lucide-react";
 import { Node } from "../ui/node";
 import {
+  Position,
   useReactFlow,
   type NodeProps,
   type Node as NodeType,
@@ -16,7 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OUTPUT_TYPE, OUTPUT_TYPE_LABELS } from "../../utils/const";
-import type { CustomNodeType, NodeTypes, OutputTypes } from "../../types";
+import type {
+  CustomEdgeType,
+  CustomNodeType,
+  NodeTypes,
+  OutputTypes,
+} from "../../types";
+import { CustomHandle } from "../ui/custom-handle";
 
 export type InputNode = NodeType<
   {
@@ -35,7 +42,7 @@ export type InputNode = NodeType<
 >;
 
 export const InputNode = ({ data, id }: NodeProps<InputNode>) => {
-  const { updateNodeData } = useReactFlow<CustomNodeType>();
+  const { updateNodeData } = useReactFlow<CustomNodeType, CustomEdgeType>();
 
   const addInputTypeHandler = (value: string) => {
     updateNodeData(id, {
@@ -44,32 +51,35 @@ export const InputNode = ({ data, id }: NodeProps<InputNode>) => {
     });
   };
   return (
-    <Node
-      title={data.title}
-      description={data.description}
-      Icon={data.Icon}
-      name={data.name}
-      output={data.output}
-    >
-      <Field>
-        <FieldLabel htmlFor="node_type">Type</FieldLabel>
-        <Select
-          defaultValue={OUTPUT_TYPE.STRING}
-          onValueChange={addInputTypeHandler}
-          value={data.variables.input}
-        >
-          <SelectTrigger id="node_type">
-            <SelectValue placeholder="Select Type" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.values(OUTPUT_TYPE).map((type) => (
-              <SelectItem key={type} value={type}>
-                {OUTPUT_TYPE_LABELS[type]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </Field>
-    </Node>
+    <>
+      <Node
+        title={data.title}
+        description={data.description}
+        Icon={data.Icon}
+        name={data.name}
+        output={data.output}
+      >
+        <Field>
+          <FieldLabel htmlFor="node_type">Type</FieldLabel>
+          <Select
+            defaultValue={OUTPUT_TYPE.STRING}
+            onValueChange={addInputTypeHandler}
+            value={data.variables.input}
+          >
+            <SelectTrigger id="node_type">
+              <SelectValue placeholder="Select Type" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(OUTPUT_TYPE).map((type) => (
+                <SelectItem key={type} value={type}>
+                  {OUTPUT_TYPE_LABELS[type]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+      </Node>
+      <CustomHandle type="source" position={Position.Right} />
+    </>
   );
 };

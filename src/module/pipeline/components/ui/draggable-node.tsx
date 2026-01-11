@@ -8,6 +8,7 @@ import {
 import { useDraggable } from "@neodrag/react";
 import type { LucideProps } from "lucide-react";
 import type {
+  CustomEdgeType,
   CustomNodeType,
   NodeTypes,
   OutputTypes,
@@ -36,8 +37,10 @@ export const DraggableNode = ({
 }: DraggableNodeProps) => {
   const draggableRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 });
-  const { setNodes, screenToFlowPosition, getNodes } =
-    useReactFlow<CustomNodeType>();
+  const { setNodes, screenToFlowPosition, getNodes } = useReactFlow<
+    CustomNodeType,
+    CustomEdgeType
+  >();
 
   useDraggable(draggableRef as React.RefObject<HTMLElement>, {
     position: position,

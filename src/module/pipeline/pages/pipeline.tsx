@@ -9,14 +9,15 @@ import {
   type OnConnect,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { NODE_COMPONENTS } from "../utils/const";
+import { EDGE_COMPONENTS, NODE_COMPONENTS } from "../utils/const";
+import type { CustomEdgeType, CustomNodeType } from "../types";
 
 export const PipelinePage = () => {
-  const [nodes, , onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, , onNodesChange] = useNodesState<CustomNodeType>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdgeType>([]);
 
   const onConnect: OnConnect = (connection) =>
-    setEdges((eds) => addEdge(connection, eds));
+    setEdges((eds) => addEdge({ ...connection, type: "custom" }, eds));
 
   return (
     <section className="w-dvw h-dvh flex items-center justify-center">
@@ -27,6 +28,7 @@ export const PipelinePage = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={NODE_COMPONENTS}
+        edgeTypes={EDGE_COMPONENTS}
       >
         <Background />
         <Controls />

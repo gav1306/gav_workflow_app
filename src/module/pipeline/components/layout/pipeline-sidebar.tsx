@@ -17,7 +17,7 @@ export const PipelineSidebar = () => {
     <Sidebar variant="floating">
       <SidebarContent>
         <SidebarGroup className="p-4">
-          <SidebarGroupLabel className="">Core Nodes</SidebarGroupLabel>
+          <SidebarGroupLabel>Core Nodes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {NODES.map((item) => (

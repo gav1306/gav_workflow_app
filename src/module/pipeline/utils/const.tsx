@@ -4,6 +4,7 @@ import { OutputNode } from "../components/nodes/output";
 import { AskAiNode } from "../components/nodes/ask-ai";
 import { TextNode } from "../components/nodes/text";
 import type { NodeTypes } from "../types";
+import { CustomEdge } from "../components/ui/custom-edge";
 
 export const OUTPUT_TYPE = {
   STRING: "string",
@@ -40,8 +41,8 @@ export const NODES = [
     type: NODE_TYPES.OUTPUT,
     description:
       "Exit point for passing values out of flow. Useful for webhooks and subflows.",
-    output: [{ name: "output", type: OUTPUT_TYPE.STRING }],
-    initialVariables: { output: "" },
+    output: [],
+    initialVariables: null,
     Component: OutputNode,
   },
   {
@@ -81,9 +82,13 @@ export const OUTPUT_TYPE_LABELS = {
   [OUTPUT_TYPE.FILE]: "file",
   [OUTPUT_TYPE.CHUNKS]: "chks",
   [OUTPUT_TYPE.ANY]: "any",
-};
+} as const;
 
 export const NODE_COMPONENTS = NODES.reduce((acc, node) => {
   acc[node.type] = node.Component;
   return acc;
 }, {} as Record<NodeTypes, React.FC<any>>);
+
+export const EDGE_COMPONENTS = {
+  custom: CustomEdge,
+} as const;

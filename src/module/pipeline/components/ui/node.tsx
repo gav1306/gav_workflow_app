@@ -103,29 +103,31 @@ export const Node = ({
           </Button>
         </ButtonGroup>
       </HoverCardContent>
-      <HoverCardContent
-        className="w-sm flex flex-col gap-2 p-2"
-        side="right"
-        align="end"
-        sideOffset={7}
-        container={reactFlowNode}
-      >
-        <span className="text-sm">Output</span>
-        <Separator />
-        <div className="flex flex-wrap gap-2">
-          {output.map((opt, index) => {
-            return (
-              <Badge
-                key={`${opt.name}-${opt.type}-${index}`}
-                variant="outline"
-                className="border-primary text-primary"
-              >
-                {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
-              </Badge>
-            );
-          })}
-        </div>
-      </HoverCardContent>
+      {!!output.length && (
+        <HoverCardContent
+          className="max-w-sm flex flex-col gap-2 p-2"
+          side="right"
+          align="end"
+          sideOffset={7}
+          container={reactFlowNode}
+        >
+          <span className="text-sm">Output</span>
+          <Separator />
+          <div className="flex flex-wrap gap-2">
+            {output.map((opt, index) => {
+              return (
+                <Badge
+                  key={`${opt.name}-${opt.type}-${index}`}
+                  variant="outline"
+                  className="border-primary text-primary"
+                >
+                  {opt.name} : {OUTPUT_TYPE_LABELS[opt.type]}
+                </Badge>
+              );
+            })}
+          </div>
+        </HoverCardContent>
+      )}
     </HoverCard>
   );
 };
