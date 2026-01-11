@@ -6,6 +6,7 @@ import {
   ScanSearch,
   CaseSensitive,
   Mail,
+  Speech,
 } from "lucide-react";
 import { InputNode } from "../components/nodes/input";
 import { OutputNode } from "../components/nodes/output";
@@ -14,6 +15,7 @@ import { TextNode } from "../components/nodes/text";
 import { AnalyzeImageNode } from "../components/nodes/analyze-image";
 import { TextFormatterNode } from "../components/nodes/text-formatter";
 import { EmailNotificationNode } from "../components/nodes/email-notification";
+import { TextToSpeechNode } from "../components/nodes/text-to-speech";
 import type { NodeTypes } from "../types";
 import { CustomEdge } from "../components/ui/custom-edge";
 
@@ -36,6 +38,7 @@ export const NODE_TYPES = {
   ANALYZE_IMAGE: "analyze_image_node",
   TEXT_FORMATTER: "text_formatter_node",
   EMAIL_NOTIFICATION: "email_notification_node",
+  TEXT_TO_SPEECH: "text_to_speech_node",
 } as const;
 
 export const AI_MODELS = {
@@ -63,6 +66,20 @@ export const TEXT_FORMATTER_OPTIONS = [
     value: TEXT_FORMATTERS.TRIM,
     label: "Trim (Remove leading/trailing whitespace)",
   },
+] as const;
+
+export const TTS_MODELS = {
+  ELEVEN_LABS: "eleven-labs",
+  OPENAI_TTS: "openai-tts",
+  GOOGLE_TTS: "google-tts",
+  AZURE_TTS: "azure-tts",
+} as const;
+
+export const TTS_MODELS_OPTIONS = [
+  { value: TTS_MODELS.ELEVEN_LABS, label: "Eleven Labs" },
+  { value: TTS_MODELS.OPENAI_TTS, label: "OpenAI TTS" },
+  { value: TTS_MODELS.GOOGLE_TTS, label: "Google TTS" },
+  { value: TTS_MODELS.AZURE_TTS, label: "Azure TTS" },
 ] as const;
 
 export const NODES = [
@@ -164,6 +181,21 @@ export const NODES = [
       status: "",
     },
     Component: EmailNotificationNode,
+  },
+  {
+    Icon: Speech,
+    title: "text to speech",
+    type: NODE_TYPES.TEXT_TO_SPEECH,
+    description:
+      "Convert text to speech audio using various TTS models. Output the generated audio file.",
+    output: [{ name: "output", type: OUTPUT_TYPE.FILE }],
+    initialVariables: {
+      text: "",
+      filename: "",
+      model: TTS_MODELS.ELEVEN_LABS,
+      output: "",
+    },
+    Component: TextToSpeechNode,
   },
 ];
 
