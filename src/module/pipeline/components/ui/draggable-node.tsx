@@ -46,7 +46,7 @@ export const DraggableNode = ({
   >();
   const { generateNodeName } = useNodeName();
 
-  const { isDragging, dragState } = useDraggable(
+  const { isDragging } = useDraggable(
     draggableRef as React.RefObject<HTMLElement>,
     {
       position: {
