@@ -20,8 +20,6 @@ const getRouter = () => {
   return router;
 };
 
-const App = () => {
+export const App = () => {
   return <RouterProvider router={getRouter()} />;
 };
-
-export default App;

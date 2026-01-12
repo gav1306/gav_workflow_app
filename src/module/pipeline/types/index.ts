@@ -24,14 +24,42 @@ export type CustomNodeType =
   | WebSearchNode;
 export type NodeTypes = (typeof NODE_TYPES)[keyof typeof NODE_TYPES];
 export type InputVariableType = { input: string };
-export type AskAiVariableType = { prompt: string; context: string };
 export type OutputVariableType = null;
+export type AskAiVariableType = {
+  prompt: string;
+  context: string;
+  model: string;
+  response: number;
+};
 export type TextVariableType = { text: string };
+export type AnalyzeImageVariableType = {
+  image: File;
+  prompt: string;
+  model: string;
+  analysis: string;
+};
+export type TextFormatterVariableType = {
+  output: string;
+};
+export type EmailNotificationVariableType = {
+  status: string;
+};
+export type TextToSpeechVariableType = {
+  output: File;
+};
+export type WebSearchVariableType = {
+  results: string[];
+};
 export type VariableType =
   | InputVariableType
   | AskAiVariableType
   | OutputVariableType
-  | TextVariableType;
+  | TextVariableType
+  | AnalyzeImageVariableType
+  | TextFormatterVariableType
+  | EmailNotificationVariableType
+  | TextToSpeechVariableType
+  | WebSearchVariableType;
 
 export type OutputTypes = (typeof OUTPUT_TYPE)[keyof typeof OUTPUT_TYPE];
 export type CustomEdgeType = CustomEdge;

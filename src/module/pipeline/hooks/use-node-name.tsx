@@ -1,5 +1,5 @@
 import { useReactFlow } from "@xyflow/react";
-import type { CustomEdgeType, CustomNodeType, NodeTypes } from "../../types";
+import type { CustomEdgeType, CustomNodeType, NodeTypes } from "../types";
 
 export const useNodeName = () => {
   const { getNodes } = useReactFlow<CustomNodeType, CustomEdgeType>();

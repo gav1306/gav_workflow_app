@@ -11,6 +11,7 @@ import {
 import { NODES } from "../../utils/const";
 import { DraggableNode } from "../ui/draggable-node";
 import { GripVertical } from "lucide-react";
+import type { VariableType } from "../../types";
 
 export const PipelineSidebar = () => {
   return (
@@ -27,7 +28,7 @@ export const PipelineSidebar = () => {
                   title={item.title}
                   description={item.description}
                   Icon={item.Icon}
-                  initialVariables={item.initialVariables}
+                  initialVariables={item.initialVariables as VariableType}
                   output={item.output}
                 >
                   <SidebarMenuItem>
