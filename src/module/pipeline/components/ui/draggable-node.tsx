@@ -14,7 +14,7 @@ import type {
   OutputTypes,
   VariableType,
 } from "../../types";
-import { useNodeName } from "../hooks/use-node-name";
+import { useNodeName } from "../../hooks/use-node-name";
 
 interface DraggableNodeProps extends React.PropsWithChildren {
   type: NodeTypes;

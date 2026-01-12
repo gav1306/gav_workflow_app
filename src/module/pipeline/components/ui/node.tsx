@@ -27,7 +27,7 @@ import {
 import type { CustomEdgeType, CustomNodeType, OutputTypes } from "../../types";
 import { OUTPUT_TYPE_LABELS } from "../../utils/const";
 import { useReactFlow } from "@xyflow/react";
-import { useNodeName } from "../hooks/use-node-name";
+import { useNodeName } from "../../hooks/use-node-name";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,7 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useDisclosure } from "../hooks/use-disclosure";
+import { useDisclosure } from "../../hooks/use-disclosure";
 
 interface NodeProps extends PropsWithChildren {
   title: string;

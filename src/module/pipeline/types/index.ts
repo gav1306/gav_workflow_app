@@ -44,3 +44,14 @@ export type NodeDataType = {
   name: string;
   output: { name: string; type: OutputTypes }[];
 };
+
+export type PipelineParseResponse = {
+  num_nodes: number;
+  num_edges: number;
+  is_dag: boolean;
+};
+
+export type PipelineParseRequest = {
+  nodes: CustomNodeType[];
+  edges: CustomEdgeType[];
+};

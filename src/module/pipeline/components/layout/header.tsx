@@ -14,9 +14,22 @@ import type { CustomEdgeType, CustomNodeType } from "../../types";
 import { toPng } from "html-to-image";
 import { EXPORT_IMAGE_CONFIG } from "../../utils/const";
 import { downloadImage } from "../../utils/helper";
+import { useParsePipeline } from "../../hooks/use-parse-pipeline";
 
 export const Header = () => {
-  const { getNodes } = useReactFlow<CustomNodeType, CustomEdgeType>();
+  const { getNodes, getEdges } = useReactFlow<CustomNodeType, CustomEdgeType>();
+
+  const parsePipelineMutate = useParsePipeline({
+    onSuccess: (data) => {
+      console.log("Pipeline run result:", data);
+    },
+  });
+
+  const runPipelineHandler = () => {
+    const nodes = getNodes();
+    const edges = getEdges();
+    parsePipelineMutate.mutate({ nodes, edges });
+  };
 
   const downloadPngHandler = () => {
     const nodesBounds = getNodesBounds(getNodes());
@@ -72,8 +85,12 @@ export const Header = () => {
             <ArrowDownToLine />
             Download
           </Button>
-          <Button className="bg-primary text-white rounded-sm">
-            <Play /> Run
+          <Button
+            className="bg-primary text-white rounded-sm"
+            onClick={runPipelineHandler}
+            disabled={parsePipelineMutate.isPending}
+          >
+            <Play /> {parsePipelineMutate.isPending ? "Running..." : "Run"}
           </Button>
         </div>
       </Panel>
