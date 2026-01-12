@@ -16,7 +16,7 @@ import type { VariableType } from "../../types";
 export const PipelineSidebar = () => {
   return (
     <Sidebar variant="floating">
-      <SidebarContent className="overflow-y-scroll">
+      <SidebarContent>
         <SidebarGroup className="p-4">
           <SidebarGroupLabel>Core Nodes</SidebarGroupLabel>
           <SidebarGroupContent>
