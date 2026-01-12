@@ -53,6 +53,7 @@ export const DraggableNode = ({
         x: 0,
         y: 0,
       },
+      applyUserSelectHack: false,
       onDragStart: ({ event }) => {
         const rect = draggableRef.current?.getBoundingClientRect();
         if (rect) {
@@ -121,12 +122,18 @@ export const DraggableNode = ({
 
   return (
     <>
-      <div ref={draggableRef} className="cursor-grab active:cursor-grabbing">
+      <div
+        ref={draggableRef}
+        style={{
+          opacity: isDragging ? 0 : 1,
+          transform: isDragging ? "translate(0, 0)" : undefined,
+        }}
+      >
         {children}
       </div>
       {isDragging && (
         <div
-          className="pointer-events-none fixed z-50 opacity-70"
+          className="pointer-events-none fixed z-50 shadow-md rounded-md"
           style={{
             left: position.x - dragStartOffset.x,
             top: position.y - dragStartOffset.y,
