@@ -15,13 +15,16 @@ import { toPng } from "html-to-image";
 import { EXPORT_IMAGE_CONFIG } from "../../utils/const";
 import { downloadImage } from "../../utils/helper";
 import { useParsePipeline } from "../../hooks/use-parse-pipeline";
+import { WorkflowResult } from "../ui/workflow-result";
+import { useDisclosure } from "../../hooks/use-disclosure";
 
 export const Header = () => {
   const { getNodes, getEdges } = useReactFlow<CustomNodeType, CustomEdgeType>();
+  const workflowResultDisclosure = useDisclosure();
 
   const parsePipelineMutate = useParsePipeline({
-    onSuccess: (data) => {
-      console.log("Pipeline run result:", data);
+    onSuccess: () => {
+      workflowResultDisclosure.onOpen();
     },
   });
 
@@ -94,6 +97,12 @@ export const Header = () => {
           </Button>
         </div>
       </Panel>
+      {parsePipelineMutate.data && (
+        <WorkflowResult
+          {...workflowResultDisclosure}
+          {...parsePipelineMutate.data}
+        />
+      )}
     </>
   );
 };
