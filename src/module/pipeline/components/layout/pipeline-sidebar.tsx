@@ -16,7 +16,7 @@ import type { VariableType } from "../../types";
 export const PipelineSidebar = () => {
   return (
     <Sidebar variant="floating">
-      <SidebarContent>
+      <SidebarContent className="overflow-y-auto">
         <SidebarGroup className="p-4">
           <SidebarGroupLabel>Core Nodes</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -34,7 +34,7 @@ export const PipelineSidebar = () => {
                   <SidebarMenuItem>
                     <SidebarMenuButton
                       size="lg"
-                      className="h-16 flex gap-2 group/item"
+                      className="h-16 flex gap-2 group/item bg-sidebar"
                     >
                       <div className="flex items-center justify-center border rounded-sm p-2.5 bg-primary/10">
                         <item.Icon className="text-primary group-hover/item:hidden" />
