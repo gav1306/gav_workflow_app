@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ArrowDownToLine, Play, Save } from "lucide-react";
-import logoIcon from "@/assets/icons/Logo.webp";
+import logoIcon from "@/assets/icons/logo.webp";
 import { Link } from "@tanstack/react-router";
 import { PipelineBreadcrumb } from "../ui/pipeline-breadcrumb";
 import {
